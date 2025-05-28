@@ -92,29 +92,3 @@ class GUIManager:
             if widget.visible:
                 widget.draw(surface)
 
-# ========== Example Usage ==========
-
-if __name__ == '__main__':
-    screen = pygame.display.set_mode((640, 480))
-    clock = pygame.time.Clock()
-    running = True
-
-    gui = GUIManager()
-
-    def on_click():
-        print("Button Clicked!")
-
-    gui.add(Label((10, 10, 100, 30), "Enter Name:"))
-    gui.add(InputBox((120, 10, 200, 30)))
-    gui.add(Button((10, 60, 150, 40), "Click Me", on_click))
-
-    while running:
-        screen.fill((30, 30, 30))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            gui.handle_event(event)
-
-        gui.draw(screen)
-        pygame.display.flip()
-        clock.tick(60)
