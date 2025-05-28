@@ -74,6 +74,42 @@ class InputBox(Widget):
             else:
                 self.text += event.unicode
         return False
+class Slider(Widget):
+    def __init__(self, rect, min_val, max_val, initial, callback=None):
+        super().__init__(rect)
+        self.min = min_val
+        self.max = max_val
+        self.value = initial
+        self.callback = callback
+        self.knob_rect = pygame.Rect(0, 0, 10, rect[3])
+        self.dragging = False
+        self.update_knob_pos()
+
+    def update_knob_pos(self):
+        ratio = (self.value - self.min) / (self.max - self.min)
+        self.knob_rect.centerx = self.rect.x + int(ratio * self.rect.w)
+        self.knob_rect.centery = self.rect.centery
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, (100, 100, 100), self.rect)
+        pygame.draw.rect(surface, (200, 200, 200), self.knob_rect)
+        val_text = FONT.render(f"{self.value:.2f}", True, (255, 255, 255))
+        surface.blit(val_text, (self.rect.right + 10, self.rect.y))
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.knob_rect.collidepoint(event.pos):
+            self.dragging = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.dragging = False
+        elif event.type == pygame.MOUSEMOTION and self.dragging:
+            x = min(max(event.pos[0], self.rect.x), self.rect.x + self.rect.w)
+            ratio = (x - self.rect.x) / self.rect.w
+            self.value = self.min + ratio * (self.max - self.min)
+            self.update_knob_pos()
+            if self.callback:
+                self.callback(self.value)
+        return False
+
 
 class GUIManager:
     def __init__(self):
