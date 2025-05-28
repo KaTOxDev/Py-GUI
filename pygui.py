@@ -134,6 +134,42 @@ class CheckBox(Widget):
         return False
 
 
+class Dropdown(Widget):
+    def __init__(self, rect, options, callback=None):
+        super().__init__(rect)
+        self.options = options
+        self.selected = options[0] if options else ''
+        self.expanded = False
+        self.callback = callback
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, (100, 100, 100), self.rect)
+        txt = FONT.render(self.selected, True, (255, 255, 255))
+        surface.blit(txt, (self.rect.x + 5, self.rect.y + 5))
+
+        if self.expanded:
+            for i, opt in enumerate(self.options):
+                opt_rect = pygame.Rect(self.rect.x, self.rect.bottom + i * self.rect.height, self.rect.w, self.rect.h)
+                pygame.draw.rect(surface, (60, 60, 60), opt_rect)
+                opt_txt = FONT.render(opt, True, (255, 255, 255))
+                surface.blit(opt_txt, (opt_rect.x + 5, opt_rect.y + 5))
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.expanded = not self.expanded
+            elif self.expanded:
+                for i, opt in enumerate(self.options):
+                    opt_rect = pygame.Rect(self.rect.x, self.rect.bottom + i * self.rect.height, self.rect.w, self.rect.h)
+                    if opt_rect.collidepoint(event.pos):
+                        self.selected = opt
+                        self.expanded = False
+                        if self.callback:
+                            self.callback(opt)
+                        break
+                else:
+                    self.expanded = False
+        return False
 
 class GUIManager:
     def __init__(self):
