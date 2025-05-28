@@ -1,16 +1,17 @@
 import pygame
-from gui import GUIManager, Button
+from gui import GUIManager, CheckBox
 
 pygame.init()
 screen = pygame.display.set_mode((400, 200))
-pygame.display.set_caption("Button Example")
+pygame.display.set_caption("CheckBox Example")
 clock = pygame.time.Clock()
 gui = GUIManager()
 
-def on_click():
-    print("Button clicked!")
+def on_toggle(state):
+    print(f"Checked: {state}")
 
-gui.add(Button((100, 70, 200, 50), "Click Me", on_click))
+checkbox = CheckBox((50, 80, 20, 20), "I Agree", callback=on_toggle)
+gui.add(checkbox)
 
 running = True
 while running:

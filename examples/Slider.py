@@ -1,16 +1,17 @@
 import pygame
-from gui import GUIManager, Button
+from gui import GUIManager, Slider
 
 pygame.init()
-screen = pygame.display.set_mode((400, 200))
-pygame.display.set_caption("Button Example")
+screen = pygame.display.set_mode((500, 200))
+pygame.display.set_caption("Slider Example")
 clock = pygame.time.Clock()
 gui = GUIManager()
 
-def on_click():
-    print("Button clicked!")
+def on_slider(value):
+    print(f"Slider Value: {value:.2f}")
 
-gui.add(Button((100, 70, 200, 50), "Click Me", on_click))
+slider = Slider((100, 80, 300, 20), 0, 100, 50, on_slider)
+gui.add(slider)
 
 running = True
 while running:
