@@ -109,6 +109,30 @@ class Slider(Widget):
             if self.callback:
                 self.callback(self.value)
         return False
+    
+class CheckBox(Widget):
+    def __init__(self, rect, text, checked=False, callback=None):
+        super().__init__(rect)
+        self.checked = checked
+        self.callback = callback
+        self.text = text
+        self.box_rect = pygame.Rect(rect[0], rect[1], rect[3], rect[3])
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, (200, 200, 200), self.box_rect, 2)
+        if self.checked:
+            pygame.draw.line(surface, (255, 255, 255), self.box_rect.topleft, self.box_rect.bottomright, 2)
+            pygame.draw.line(surface, (255, 255, 255), self.box_rect.topright, self.box_rect.bottomleft, 2)
+        txt_surf = FONT.render(self.text, True, (255, 255, 255))
+        surface.blit(txt_surf, (self.box_rect.right + 10, self.box_rect.y))
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.box_rect.collidepoint(event.pos):
+            self.checked = not self.checked
+            if self.callback:
+                self.callback(self.checked)
+        return False
+
 
 
 class GUIManager:
