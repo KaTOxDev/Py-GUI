@@ -10,7 +10,7 @@
 - ☑️ **Checkbox** - Toggle options
 - 📝 **Dropdown** - Selection from multiple options
 
-![GUI Screenshot](screenshot.png)
+![GUI Screenshot](Screenshot.png)
 
 ## 🚀 Quick Start
 
